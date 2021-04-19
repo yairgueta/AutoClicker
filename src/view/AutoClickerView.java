@@ -31,11 +31,48 @@ public class AutoClickerView extends JFrame {
         mouseSettings.setFocusable(true);
 
         // Add Widgets to Window
-        this.add(mouseSettings);
-        this.add(acSettings);
-        this.add(timerPanel);
+        mainPanel.add(mouseSettings);
+        mainPanel.add(acSettings);
+        mainPanel.add(timerPanel);
+        mainPanel.setFocusable(true);
+        mainPanel.setRequestFocusEnabled(true);
 
 
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('a'), "a Clicked");
+        mainPanel.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke('a'), "a Clicked");
+        mainPanel.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke('a'), "a Clicked");
+        mainPanel.getActionMap().put("a Clicked", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("hihihi");
+            }
+        });
+        mainPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainPanel.requestFocus();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         //** Layout Settings **//
         layout.putConstraint(SpringLayout.WEST, mouseSettings, 0, SpringLayout.WEST, this);
@@ -48,9 +85,12 @@ public class AutoClickerView extends JFrame {
 
 
         // Other Window Settings
-        Dimension dims = new Dimension(400, 300);
-        this.setPreferredSize(dims);
-        this.setSize(dims);
+        Dimension dims = new Dimension(500, 200);
+        mainPanel.setPreferredSize(dims);
+//        mainPanel.setSize(dims);
+
+        this.add(mainPanel);
+        this.pack();
         this.setVisible(true);
         this.setFocusable(true);
         this.setAutoRequestFocus(true);

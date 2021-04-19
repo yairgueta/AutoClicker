@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Arrays;
 
 public class JIntField extends JTextField implements FocusListener {
     private final static int DEFAULT_MAX_INTS = 5;
@@ -14,6 +15,7 @@ public class JIntField extends JTextField implements FocusListener {
         super(defaultText, columns);
         ((AbstractDocument)this.getDocument()).setDocumentFilter(new IntegerDocument(5));
         this.addFocusListener(this);
+        System.out.println(Arrays.toString(this.getInputMap(JComponent.WHEN_FOCUSED).allKeys()));
     }
 
     public JIntField(String defaultText, int columns){
