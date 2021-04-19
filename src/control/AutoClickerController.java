@@ -94,6 +94,9 @@ public class AutoClickerController {
         int intervalTime = view.getIntervalTime();
 
         model.setClicker(initTime, intervalTime, this::updateTimer);
+        Point xy = view.getUserMouseInput();
+        model.setDx(xy.x);
+        model.setDy(xy.y);
     }
 
     private void updateTimer(){
