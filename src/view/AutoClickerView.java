@@ -13,8 +13,10 @@ public class AutoClickerView extends JFrame {
     private JLabel timer;
 
     public AutoClickerView(){
+        JPanel mainPanel = new JPanel();
+
         SpringLayout layout = new SpringLayout();
-        getContentPane().setLayout(layout);
+        mainPanel.setLayout(layout);
 
         // Create Autoclicker Settings
         acSettings = new AutoClickSettingsView();
@@ -32,6 +34,7 @@ public class AutoClickerView extends JFrame {
         this.add(mouseSettings);
         this.add(acSettings);
         this.add(timerPanel);
+
 
 
         //** Layout Settings **//
