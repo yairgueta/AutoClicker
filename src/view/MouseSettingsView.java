@@ -6,11 +6,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class MouseSettingsView extends JPanel implements KeyListener {
+public class MouseSettingsView extends JPanel {
     private static final String MOUSE_POS_FORMAT = "X:%04d Y:%04d";
     JIntField xField, yField;
     JButton testMouseBtn;
-    KeyListenerButton keyButton;
     private JLabel mousePos;
     Dimension size;
 
@@ -32,14 +31,12 @@ public class MouseSettingsView extends JPanel implements KeyListener {
 
         mousePosPanel.setBorder(BorderFactory.createLineBorder(new Color(0xB8BFB6)));
 
-        testMouseBtn = new JButton("Test\nMouse");
-        testMouseBtn.setPreferredSize(new Dimension(testMouseBtn.getPreferredSize().width, testMouseBtn.getPreferredSize().height * 2));
-        keyButton = new KeyListenerButton();
-        keyButton.setFunction(() -> {
-            String s = mousePos.getText();
-            xField.setText(s.substring(2, 6));
-            yField.setText(s.substring(9));
-        });
+        testMouseBtn = new JButton("Test Mouse");
+        JLabel tipLabel = new JLabel("<html><div style='text-align: center; '>Click A to assign<br>current mouse pos</div></html>");
+        tipLabel.setBackground(new Color(0x3D403D));
+        tipLabel.setOpaque(true);
+        tipLabel.setForeground(new Color(0xF5FFF1));
+        tipLabel.setHorizontalAlignment(JLabel.CENTER);
 
         this.add(xLabel);
         this.add(xField);
@@ -47,7 +44,7 @@ public class MouseSettingsView extends JPanel implements KeyListener {
         this.add(yField);
         this.add(mousePosPanel);
         this.add(testMouseBtn);
-        this.add(keyButton);
+        this.add(tipLabel);
 
         // Spread x label&field horizontally
         layout.putConstraint(SpringLayout.WEST, xLabel, 8, SpringLayout.WEST, this);
@@ -62,25 +59,27 @@ public class MouseSettingsView extends JPanel implements KeyListener {
 //        layout.putConstraint(SpringLayout.EAST, yField, -8, SpringLayout.EAST, this);
 
 
-        // Spread Buttons horizontally
+        // Spread Button horizontally
         layout.putConstraint(SpringLayout.WEST, testMouseBtn, 5, SpringLayout.WEST, this);
-        layout.putConstraint(SpringLayout.EAST, testMouseBtn, 5, SpringLayout.WEST, keyButton);
-        layout.putConstraint(SpringLayout.EAST, keyButton, -5, SpringLayout.EAST, this);
+        layout.putConstraint(SpringLayout.EAST, testMouseBtn, -5, SpringLayout.EAST, this);
+
+        // Spread tip horizontally
+        layout.putConstraint(SpringLayout.WEST, tipLabel, 5, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.EAST, tipLabel, -5, SpringLayout.EAST, this);
 
         // X on top of y on top of mouspos on top of btn
         layout.putConstraint(SpringLayout.NORTH, yLabel, 0, SpringLayout.SOUTH, xLabel);
         layout.putConstraint(SpringLayout.NORTH, yField, 0, SpringLayout.SOUTH, xField);
         layout.putConstraint(SpringLayout.NORTH, mousePosPanel, 0, SpringLayout.SOUTH, yField);
         layout.putConstraint(SpringLayout.NORTH, testMouseBtn, 0, SpringLayout.SOUTH, mousePosPanel);
-        layout.putConstraint(SpringLayout.NORTH, keyButton, 0, SpringLayout.SOUTH, mousePosPanel);
-        layout.putConstraint(SpringLayout.SOUTH, keyButton, 0, SpringLayout.SOUTH, this);
+        layout.putConstraint(SpringLayout.NORTH, tipLabel, 0, SpringLayout.SOUTH, testMouseBtn);
 
         // align labels vertically center
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, xLabel, 0, SpringLayout.VERTICAL_CENTER, xField);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, yLabel, 0, SpringLayout.VERTICAL_CENTER, yField);
 
         size = Utils.getCumulativeSize(new JComponent[]{mousePosPanel},
-                                       new JComponent[]{xField, yField, mousePosPanel, testMouseBtn});
+                                       new JComponent[]{xField, yField, mousePosPanel, testMouseBtn, tipLabel});
         size.width += 15;
         this.setPreferredSize(size);
         this.setFocusable(true);
@@ -95,20 +94,9 @@ public class MouseSettingsView extends JPanel implements KeyListener {
         this.mousePos.setText(MOUSE_POS_FORMAT.formatted(x, y));
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-
+    public void assignCurrentPixelsToInput(){
+        String s = mousePos.getText();
+        xField.setText(s.substring(2, 6));
+        yField.setText(s.substring(9));
     }
 }
